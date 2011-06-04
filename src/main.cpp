@@ -42,7 +42,7 @@ int main(int argc, char **argv) {
     std::string str;
     std::getline(_inFile, str);
     char* input = strtok((char*)str.c_str()," ");
-    while ((input = strtok((char*)str.c_str()," ")))
+    while ((input = strtok(NULL," ")))
     {
       std::cout<<input<<std::endl;
     }
