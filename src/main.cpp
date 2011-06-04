@@ -25,12 +25,27 @@
 #include <cstring>
 #include <iostream>
 #include <cstdlib>
-
+#include <fstream>
+#include <map>
 // project includes
-#include "class/edge.h"
-#include "class/node.h"
+#include "edge.h"
+#include "node.h"
 
 
 int main(int argc, char **argv) {
+  
+  std::ifstream _inFile(argv[1]);
+  std::string str;
+  std::map<std::string, Node> table;
+  while (!_inFile.eof())
+  {
+    std::string str;
+    std::getline(_inFile, str);
+    char* input = strtok((char*)str.c_str()," ");
+    while ((input = strtok((char*)str.c_str()," ")))
+    {
+      std::cout<<input<<std::endl;
+    }
+  }
     return EXIT_SUCCESS;
 }
