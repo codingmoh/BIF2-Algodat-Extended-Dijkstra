@@ -1,2 +1,4 @@
 # dont commit tmp files
 *~
+*.o
+*.tar.gz
