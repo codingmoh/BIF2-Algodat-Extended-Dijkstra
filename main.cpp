@@ -43,6 +43,7 @@ int main(int argc, char **argv) {
     std::getline(_inFile, str);
     char* input = strtok((char*)str.c_str(),"\"");
     char* ubahn = input;
+    Node*last;
     while ((input = strtok(NULL,"\"")))
     {
       if(!table.count(input))
@@ -50,17 +51,32 @@ int main(int argc, char **argv) {
 	  std::string name(input);
 	  Node x(name);
 	  table.insert(std::pair<std::string, Node*>(name, &x));
+	  Edge e(last);
+	  e.duration = atoi(strtok(NULL,"\""));
+	  e.subwayLine=ubahn;
+	  x.addEdge(&e);
+	  if((input = strtok(NULL,"\"")))
+	  {
+	  std::string name(input);
+	  Node * next = new Node(name);
+	  Edge f(next);
+	  f.duration = atoi(strtok(NULL,"\""));
+	  f.subwayLine=ubahn;
+	  x.addEdge(&f);
+	  last = &x;
+	  std::cout<<x.name<<std::endl;
+	  }
       }
       else
       {
 	std::string name(input);
 	Node * x = new Node(input);
-	
 	Edge * e= new Edge(x);
 	table[name]->addEdge(e);
 	table.find(name);
       }
     }
   }
+   std::cout<<table["Spittelau"]->name<<std::endl;
     return EXIT_SUCCESS;
 }
