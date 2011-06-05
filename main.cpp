@@ -43,40 +43,66 @@ int main(int argc, char **argv) {
     std::getline(_inFile, str);
     char* input = strtok((char*)str.c_str(),"\"");
     char* ubahn = input;
-    Node*last;
-    while ((input = strtok(NULL,"\"")))
+    Node*lastnode = NULL;
+    Edge*lastedge = NULL;
+    input = strtok(NULL,"\"");
+    while (input)
     {
       if(!table.count(input))
       {
 	  std::string name(input);
-	  Node x(name);
-	  table.insert(std::pair<std::string, Node*>(name, &x));
-	  Edge e(last);
-	  e.duration = atoi(strtok(NULL,"\""));
-	  e.subwayLine=ubahn;
-	  x.addEdge(&e);
-	  if((input = strtok(NULL,"\"")))
+	  Node current(name);
+	  table.insert(std::pair<std::string, Node*>(name, &current));
+	  if(lastnode!=NULL)
 	  {
-	  std::string name(input);
-	  Node * next = new Node(name);
-	  Edge f(next);
-	  f.duration = atoi(strtok(NULL,"\""));
-	  f.subwayLine=ubahn;
-	  x.addEdge(&f);
-	  last = &x;
-	  std::cout<<x.name<<std::endl;
+	    Edge e(lastnode);
+	    e.duration = lastedge->duration;
+	    e.subwayLine=ubahn;
+	    current.addEdge(&e);
 	  }
+	  if((input = strtok(NULL,"\"\r")))
+	  {
+	    Node * next;
+	    Edge f(next);
+	    f.duration = atoi(input);
+	    f.subwayLine=ubahn;
+	    input = strtok(NULL,"\"");
+	    std::string name(input);
+	    next = new Node(name);	    
+	    current.addEdge(&f);
+	    lastedge = &f;
+	  }
+	  lastnode = &current;
+
       }
       else
       {
 	std::string name(input);
 	Node * x = new Node(input);
-	Edge * e= new Edge(x);
-	table[name]->addEdge(e);
-	table.find(name);
+	Edge * current = new Edge(x);
+	current->duration = atoi(strtok(NULL,"\""));
+	table[name]->addEdge(current);
+	
+	if(lastnode!=NULL)
+	{
+	  Edge * before = new Edge(lastnode);
+	  before->duration = lastedge->duration;
+	  table[name]->addEdge(before);
+	}
+	
+	if((input = strtok(NULL,"\"\r")))
+	{
+	  Node * nxt = new Node(input);
+	  Edge * next = new Edge(nxt);
+	  next->duration = lastedge->duration;
+	  next->subwayLine=ubahn;
+	  table[name]->addEdge(next);
+	 }
+	  std::cout<<"dd:"<<name<<std::endl;
+	  lastedge = current;
       }
     }
   }
-   std::cout<<table["Spittelau"]->name<<std::endl;
+   //std::cout<<table["Spittelau"]->name<<std::endl;
     return EXIT_SUCCESS;
 }
