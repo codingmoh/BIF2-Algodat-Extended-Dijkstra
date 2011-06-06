@@ -1,1 +1,0 @@
-/usr/bin/c++   -g   CMakeFiles/dijkstra.dir/edge.cpp.o CMakeFiles/dijkstra.dir/node.cpp.o CMakeFiles/dijkstra.dir/main.cpp.o  -o dijkstra -rdynamic 

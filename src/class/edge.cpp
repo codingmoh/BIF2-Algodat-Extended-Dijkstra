@@ -27,6 +27,7 @@
 
 // project includes
 #include "edge.h"
+#include "node.h"
 
 /**
  * Constructor which takes the pointer to the next node/station

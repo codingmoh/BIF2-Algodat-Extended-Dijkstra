@@ -1,1 +1,0 @@
-U1: "Leopoldau" 2 "Grossfeldsiedlung" 1 "Aderklaaer Strasse" 1 "Rennbahnweg" 2 "Kagraner Platz" 2 "Kagran" 1 "Alte Donau" 2 "Kaisermuehlen-VIC" 1 "Donauinsel" 2 "Vorgartenstrasse" 1 "Praterstern" 1 "Nestroyplatz" 1 "Schwedenplatz" 1 "Stephansplatz" 2 "Karlsplatz" 2 "Taubstummengasse" 1 "Suedtirolerplatz" 2 "Keplerplatz" 1 "Reumannplatz"

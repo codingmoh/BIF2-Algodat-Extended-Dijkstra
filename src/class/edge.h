@@ -1,4 +1,4 @@
-//      node.h
+//      edge.h
 //      
 //      Copyright 2011 Bernhard Posselt <bernhard.posselt@gmx.at>
 //                     Mohamed Auf <mohamed.auf@technikum-wien.at>
@@ -20,23 +20,18 @@
 //      
 //      
 
+
+#ifndef EDGE_H
+#define EDGE_H
+
+// standard includes
 #include <vector>
 #include <cstring>
 #include <iostream>
 
+// project includes
+#include "node.h"
 
-/*
-########################################################################
-Edge class
-########################################################################
-*/
-
-// define to avoid circular includes
-class Node;
-
-
-#ifndef EDGE_H
-#define EDGE_H
 
 /**
  * Represents an edge. An edge connects 2 nodes (subway stations) but 
@@ -56,5 +51,6 @@ class Edge {
         Node* nextNode;
 
 };
+
 
 #endif // EDGE_H

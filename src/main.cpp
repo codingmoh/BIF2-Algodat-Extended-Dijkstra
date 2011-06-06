@@ -27,6 +27,7 @@
 #include <cstdlib>
 #include <fstream>
 #include <map>
+#include <set>
 // project includes
 #include "edge.h"
 #include "node.h"
@@ -34,18 +35,71 @@
 
 int main(int argc, char **argv) {
   
-  std::ifstream _inFile(argv[1]);
-  std::string str;
-  std::map<std::string, Node> table;
+  std::ifstream _inFile("ubahn2.txt");
+  std::map<std::string, Node*> table;
+  std::map<std::string, Node>::iterator it;
   while (!_inFile.eof())
   {
     std::string str;
     std::getline(_inFile, str);
-    char* input = strtok((char*)str.c_str()," ");
-    while ((input = strtok(NULL," ")))
+    char* input = strtok((char*)str.c_str(),"\"");
+    char* ubahn = input;
+    Node*lastnode = NULL;
+    Edge*lastedge = NULL;
+    int lastduration = 0;
+    input = strtok(NULL,"\"");
+    while (input)
     {
-      std::cout<<input<<std::endl;
+      if(!table.count(input))
+      {
+	  std::string name(input);
+	  Node * current = new Node(name);
+	  table[name] = current;
+	  if(lastnode!=NULL)
+	  {
+	    Edge * last_to_current = new Edge(current);
+	    Edge * current_to_last = new Edge(lastnode);
+	    last_to_current->duration = lastduration;
+	    last_to_current->subwayLine = ubahn;
+	    current_to_last->duration = lastduration;
+	    current_to_last->subwayLine = ubahn;
+	    current->addEdge(current_to_last);
+	    lastnode->addEdge(last_to_current);
+	    int x = lastnode->edges.size();
+	    int y = current->edges.size();
+	  }
+	  if((input = strtok(NULL,"\"\r")))
+	  {
+	    lastduration =  atoi(input);
+	    input = strtok(NULL,"\"");
+	  }
+	  lastnode = current;
+      }
+      else
+      {
+	std::string name(input);
+	Node * current = table[name];
+	Edge * last_to_current = new Edge(current);
+	Edge * current_to_last = new Edge(lastnode);
+	current->addEdge(current_to_last);
+	if(lastnode!=NULL)
+	  lastnode->addEdge(last_to_current);
+	lastnode = current;
+	if((input = strtok(NULL,"\"\r")))
+	{
+	    lastduration =  atoi(input);
+	    input = strtok(NULL,"\"");
+	}
+      }
     }
+  }
+   
+   std::vector<Edge*> x =  table["Schwedenplatz"]->getEdges();
+   for(int i = 0;i< x.size();i++)
+   {
+     Node* n = x[i]->getNextNode();
+     std::cout<< n->name<<std::endl;
+     
   }
     return EXIT_SUCCESS;
 }
