@@ -32,7 +32,8 @@
  * Constructor which takes the name of the node/station
  * @param std::string name: The station name
  */
-Node::Node(std::string name){
+Node::Node(std::string name)
+{
     this->name = name;
 }
 
@@ -40,15 +41,16 @@ Node::Node(std::string name){
  * Add a new edge to the node
  * @param Edge edge: The edge object
  */
-void Node::addEdge(Edge* edge){
+void Node::addEdge(Edge* edge)
+{
     this->edges.push_back(edge);
-    
 }
 
 /**
  * Returns the edges of a node
  * @return std::vector<Edge* > edges: The list with edges
  */
-std::vector<Edge* > Node::getEdges(){
+std::vector<Edge* > Node::getEdges()
+{
     return this->edges;
 }

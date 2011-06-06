@@ -35,8 +35,9 @@
 
 int main(int argc, char **argv) {
   
-  std::ifstream _inFile("ubahn.txt");
+  std::ifstream _inFile("ubahn2.txt");
   std::map<std::string, Node*> table;
+  std::map<std::string, Node>::iterator it;
   while (!_inFile.eof())
   {
     std::string str;
@@ -45,64 +46,60 @@ int main(int argc, char **argv) {
     char* ubahn = input;
     Node*lastnode = NULL;
     Edge*lastedge = NULL;
+    int lastduration = 0;
     input = strtok(NULL,"\"");
     while (input)
     {
       if(!table.count(input))
       {
 	  std::string name(input);
-	  Node current(name);
-	  table.insert(std::pair<std::string, Node*>(name, &current));
+	  Node * current = new Node(name);
+	  table[name] = current;
 	  if(lastnode!=NULL)
 	  {
-	    Edge e(lastnode);
-	    e.duration = lastedge->duration;
-	    e.subwayLine=ubahn;
-	    current.addEdge(&e);
+	    Edge * last_to_current = new Edge(current);
+	    Edge * current_to_last = new Edge(lastnode);
+	    last_to_current->duration = lastduration;
+	    last_to_current->subwayLine = ubahn;
+	    current_to_last->duration = lastduration;
+	    current_to_last->subwayLine = ubahn;
+	    current->addEdge(current_to_last);
+	    lastnode->addEdge(last_to_current);
+	    int x = lastnode->edges.size();
+	    int y = current->edges.size();
 	  }
 	  if((input = strtok(NULL,"\"\r")))
 	  {
-	    Node * next;
-	    Edge f(next);
-	    f.duration = atoi(input);
-	    f.subwayLine=ubahn;
+	    lastduration =  atoi(input);
 	    input = strtok(NULL,"\"");
-	    std::string name(input);
-	    next = new Node(name);	    
-	    current.addEdge(&f);
-	    lastedge = &f;
 	  }
-	  lastnode = &current;
-
+	  lastnode = current;
       }
       else
       {
 	std::string name(input);
-	Node * x = new Node(input);
-	Edge * current = new Edge(x);
-	current->duration = atoi(strtok(NULL,"\""));
-	table[name]->addEdge(current);
-	
+	Node * current = table[name];
+	Edge * last_to_current = new Edge(current);
+	Edge * current_to_last = new Edge(lastnode);
+	current->addEdge(current_to_last);
 	if(lastnode!=NULL)
-	{
-	  Edge * before = new Edge(lastnode);
-	  before->duration = lastedge->duration;
-	  table[name]->addEdge(before);
-	}
-	
+	  lastnode->addEdge(last_to_current);
+	lastnode = current;
 	if((input = strtok(NULL,"\"\r")))
 	{
-	  Node * nxt = new Node(input);
-	  Edge * next = new Edge(nxt);
-	  next->duration = lastedge->duration;
-	  next->subwayLine=ubahn;
-	  table[name]->addEdge(next);
-	 }
-	  std::cout<<"dd:"<<name<<std::endl;
-	  lastedge = current;
+	    lastduration =  atoi(input);
+	    input = strtok(NULL,"\"");
+	}
       }
     }
   }
-   //std::cout<<table["Spittelau"]->name<<std::endl;
+   
+   std::vector<Edge*> x =  table["Schwedenplatz"]->getEdges();
+   for(int i = 0;i< x.size();i++)
+   {
+     Node* n = x[i]->getNextNode();
+     std::cout<< n->name<<std::endl;
+     
+  }
     return EXIT_SUCCESS;
 }

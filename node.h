@@ -24,9 +24,9 @@ class Node {
         Node(std::string);
         void addEdge(Edge*);
         std::vector<Edge* > getEdges();
-    
-    private:
-        std::vector<Edge* > edges;
+	std::vector<Edge* > edges;
+    /*private:
+        std::vector<Edge* > edges;*/
 
 };
 
