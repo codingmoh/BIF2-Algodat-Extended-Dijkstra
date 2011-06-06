@@ -52,9 +52,8 @@ int main(int argc, char **argv) {
     {
       if(!table.count(input))
       {
-	  std::string name(input);
-	  Node * current = new Node(name);
-	  table[name] = current;
+	  Node * current = new Node(input);
+	  table[input] = current;
 	  if(lastnode!=NULL)
 	  {
 	    Edge * last_to_current = new Edge(current);
@@ -65,8 +64,6 @@ int main(int argc, char **argv) {
 	    current_to_last->subwayLine = ubahn;
 	    current->addEdge(current_to_last);
 	    lastnode->addEdge(last_to_current);
-	    int x = lastnode->edges.size();
-	    int y = current->edges.size();
 	  }
 	  if((input = strtok(NULL,"\"\r")))
 	  {
@@ -77,13 +74,19 @@ int main(int argc, char **argv) {
       }
       else
       {
-	std::string name(input);
-	Node * current = table[name];
+	Node * current = table[input];
 	Edge * last_to_current = new Edge(current);
 	Edge * current_to_last = new Edge(lastnode);
+	current_to_last->subwayLine=ubahn;
+	current_to_last->duration = lastduration;
 	current->addEdge(current_to_last);
+	
 	if(lastnode!=NULL)
+	{
+	  last_to_current->subwayLine = ubahn;
+	  last_to_current->duration = lastduration;
 	  lastnode->addEdge(last_to_current);
+	}
 	lastnode = current;
 	if((input = strtok(NULL,"\"\r")))
 	{
@@ -98,7 +101,7 @@ int main(int argc, char **argv) {
    for(int i = 0;i< x.size();i++)
    {
      Node* n = x[i]->getNextNode();
-     std::cout<< n->name<<std::endl;
+     std::cout<< n->name<<x[i]->subwayLine<<x[i]->duration<<std::endl;
      
   }
     return EXIT_SUCCESS;
